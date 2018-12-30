@@ -8,8 +8,10 @@ class Tile {
         // this.color = "#" + Math.floor(Math.random() * 16777215).toString(16);
     }
 
-    setColor(color){
-        this.color = color;
+    setImage(id,color){
+        this.color = id;
+        this.image = color;
+        // this.image.resize(this.size,this.size);
     }
 
     update(){
@@ -26,11 +28,14 @@ class Tile {
         if(this.isHover){
             fill(125)
         }
+
         if(this.selected){
-            fill(this.color)
+            imageMode(CENTER);
+            image(this.image,0,0);
+        }else{
+            rectMode(CENTER)
+            rect(0,0,this.size,this.size);
         }
-        rectMode(CENTER)
-        rect(0,0,this.size,this.size);
         pop();
     }
 }

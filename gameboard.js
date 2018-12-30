@@ -10,8 +10,12 @@ class GameBoard {
         this.tiles = [];
         this.selectedTileA = null;
         this.selectedTileB = null;
-        this.point = 0;
-        let colors = ["#d8193b", "#11efda", "#1eb92a", "#277d76", "#7c6ccc"]
+        this.tick = time;
+        this.gameOver = false;
+        this.finis = true;
+
+        this.counter;
+        let colors = imgs;
         for (let i = 0; i < this.row; i++) {
             for (let j = 0; j < this.col; j++) {
                 let tile = new Tile((j * this.tilesSize) + this.pos.x, (i * this.tilesSize) + this.pos.y, this.tilesSize)
@@ -30,13 +34,13 @@ class GameBoard {
         let newTiles = [];
         let numColor = this.tiles.length / colors.length; 
 
-        colors.forEach(color => {
+        colors.forEach((color,id) => {
             for (let i = 0; i < numColor; i++) {
                 
                 let tileIndex = random(tilesIndexes);
                 let newTile = this.tiles[tileIndex];
 
-                newTile.setColor(color);
+                newTile.setImage(id,color);
                 newTiles.push(newTile);
                 this.tiles.splice(tileIndex, 1);
                 
@@ -51,7 +55,10 @@ class GameBoard {
     }
 
     update(){
-
+        if(this.tiles.length == 0){
+            this.finish = true;
+            clearInterval(this.counter);
+        }
         for (let i = 0; i < this.tiles.length; i++) {
             this.tiles[i].update()
         }
@@ -118,6 +125,21 @@ class GameBoard {
     hide() {
         for (let i = 0; i < this.tiles.length; i++) {
             this.tiles[i].selected = false;
+        }
+    }
+
+    start(){
+        this.counter = setInterval(() => {
+            this.ticks();
+        },1000);
+    }
+
+    ticks(){
+        if(this.tick > 0){
+            this.tick--
+        }else{
+            clearInterval(this.counter);
+            this.gameOver = true;
         }
     }
 }
